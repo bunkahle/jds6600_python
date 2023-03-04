@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 # example application to read and change the status of a JDS6600
 # connected over USB
 
@@ -5,41 +8,51 @@
 # version 0.2 - 20191007
 
 # kristoff Bonne (ON1ARF)
+# slightly corrected by Andreas Bunkahle for the new machines in 2023
 
 # import library
+
+from __future__ import print_function
+
+import sys, time
 from jds6600 import jds6600
 
-j = jds6600("/dev/ttyUSB3")
+j = jds6600("COM7")
 
-j.getAPIinfo_version()
-j.getAPIinfo_release()
-
+print(j.getAPIinfo_version())
+print(j.getAPIinfo_release())
 
 
 # API information calls
-j.getinfo_devicetype()
-j.getinfo_serialnumber()
+print(j.getinfo_devicetype())
+print(j.getinfo_serialnumber())
 
-j.getinfo_waveformlist()
-
+print(j.getinfo_waveformlist())
 
 # get status of jds6600
-j.getchannelenable()
+print(j.getchannelenable())
 
 for ch in (1,2):
-	j.getwaveform(ch)
-	j.getfrequency(ch)
-	j.getamplitude(ch)
-	j.getoffset(ch)
-	j.getdutycycle(ch)
+	print("Channel "+str(ch), "Waveform:", j.getwaveform(ch))
+	print("Channel "+str(ch), "Frequency:", j.getfrequency(ch))
+	print("Channel "+str(ch), "Amplitude:", j.getamplitude(ch))
+	print("Channel "+str(ch), "Offset:", j.getoffset(ch))
+	print("Channel "+str(ch), "Dutycycle:", j.getdutycycle(ch))
 
-j.getphase()
-
+print("Phase:", j.getphase())
 
 # changing status
 j.setfrequency(1,1000)
+time.sleep(2)	
 j.setfrequency(1,40000,1)
-
+time.sleep(2)
 j.setwaveform(2,2)
+time.sleep(2)
 j.setwaveform(1,"sinc")
-
+j.setchannelenable(True, False)
+time.sleep(2)
+j.setchannelenable(False, True)
+time.sleep(2)
+j.setchannelenable(True, True)
+time.sleep(2)
+j.setchannelenable(False, False)

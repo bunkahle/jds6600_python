@@ -8,11 +8,11 @@ Python class to remote-control a Junce-Instrument JDS6600 signal generator, usin
 - version 0.0.4 (2018/02/14): added "pulse" and "burst" menu + codecleanup
 - version 0.0.5 (2018/02/16): added system menu
 - version 0.1.0 (2018/02/17): added arbitrary waveform 
+- version 0.1.1:(2023/03/04): line_end is now chr(0x0d)+chr(0x0a) for the api of the newer machines instead of chr(0x0a) for the older ones.
 
 
 ## API
 For the API-calls, see api.txt
-
 
 ## Examples
 See examples/readjds.py

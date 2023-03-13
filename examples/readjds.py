@@ -17,7 +17,25 @@ from __future__ import print_function
 import sys, time
 from jds6600 import jds6600
 
-j = jds6600("COM7")
+com_ports = []
+for i in range(32):
+    try:
+        j = jds6600("COM"+str(i))
+        try:
+            print(j.getinfo_devicetype())
+            print(j.getinfo_serialnumber())
+            com_ports.append(i)
+            j.ser.close()
+        except:
+            pass
+    except serial.serialutil.SerialException:
+        pass
+print("COM-Ports:", com_ports)
+if len(com_ports)>0:
+    j = jds6600("COM"+str(com_ports[-1]))
+else:
+    print("No JDS6600 connected!")
+    sys.exit()
 
 print(j.getAPIinfo_version())
 print(j.getAPIinfo_release())
